@@ -1,0 +1,146 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.0
+-- https://www.phpmyadmin.net/
+--
+-- Servidor: 127.0.0.1:3308
+-- Tiempo de generación: 29-11-2022 a las 02:52:25
+-- Versión del servidor: 10.4.24-MariaDB
+-- Versión de PHP: 8.0.19
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+--
+-- Base de datos: `miconsultorio`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `citas`
+--
+
+CREATE TABLE `citas` (
+  `id_cita` int(10) NOT NULL,
+  `nombre_cita` varchar(80) NOT NULL,
+  `fechaNac_cita` date NOT NULL,
+  `identificacion_cita` varchar(10) NOT NULL,
+  `fechaAt_cita` date NOT NULL,
+  `horaAt_cita` time(6) NOT NULL,
+  `correo_cita` varchar(40) NOT NULL,
+  `id_medico` varchar(2) NOT NULL,
+  `fecha_at_cita` date DEFAULT NULL,
+  `fecha_nac_cita` date DEFAULT NULL,
+  `hora_at_cita` time DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `citas`
+--
+
+INSERT INTO `citas` (`id_cita`, `nombre_cita`, `fechaNac_cita`, `identificacion_cita`, `fechaAt_cita`, `horaAt_cita`, `correo_cita`, `id_medico`, `fecha_at_cita`, `fecha_nac_cita`, `hora_at_cita`) VALUES
+(1, 'Rick Sanchez', '2022-11-01', '515115141', '2022-11-02', '18:55:00.000000', 'ris@gmail.com', '1', '2022-11-02', '2022-10-01', '18:55:00'),
+(3, 'Morty Smith', '2010-11-17', '561515557', '2022-11-29', '11:00:00.000000', 'mor@gmail.com', '2', NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `medico`
+--
+
+CREATE TABLE `medico` (
+  `id_medico` varchar(2) NOT NULL,
+  `identificacion_medico` varchar(12) NOT NULL,
+  `nombre_medico` varchar(80) NOT NULL,
+  `rm_medico` varchar(10) NOT NULL,
+  `movil_medico` varchar(12) NOT NULL,
+  `correo_medico` varchar(40) NOT NULL,
+  `clave_medico` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `medico`
+--
+
+INSERT INTO `medico` (`id_medico`, `identificacion_medico`, `nombre_medico`, `rm_medico`, `movil_medico`, `correo_medico`, `clave_medico`) VALUES
+('1', '987654321', 'Strange', '123ALP', '3102457816', 'drs@gmail.co', '7c4a8d09ca3762af61e59520943dc26494f8941b'),
+('2', '6555555', 'Juan Nicolas', '458HJD', '87878777', 'jn@gmail.co', '121212'),
+('3', '56565656', 'Harry', '007VIP', '310245485', 'vip@gmail.co', '273a0c7bd3c679ba9a6f5d99078e36e85d02b952');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `solicitudes`
+--
+
+CREATE TABLE `solicitudes` (
+  `id_solicitud` int(10) NOT NULL,
+  `nombre_solicitud` varchar(80) NOT NULL,
+  `fechaNac_solicitud` date NOT NULL,
+  `identificacion_solicitud` varchar(10) NOT NULL,
+  `fechaAt_solicitud` date NOT NULL,
+  `horaAt_solicitud` time(6) NOT NULL,
+  `correo_solicitud` varchar(40) NOT NULL,
+  `id_medico` varchar(2) NOT NULL,
+  `fecha_at_solicitud` datetime DEFAULT NULL,
+  `fecha_nac_solicitud` datetime DEFAULT NULL,
+  `hora_at_solicitud` time DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `citas`
+--
+ALTER TABLE `citas`
+  ADD PRIMARY KEY (`id_cita`),
+  ADD KEY `medico_fk` (`id_medico`);
+
+--
+-- Indices de la tabla `medico`
+--
+ALTER TABLE `medico`
+  ADD PRIMARY KEY (`id_medico`);
+
+--
+-- Indices de la tabla `solicitudes`
+--
+ALTER TABLE `solicitudes`
+  ADD PRIMARY KEY (`id_solicitud`),
+  ADD KEY `id_medico` (`id_medico`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `citas`
+--
+ALTER TABLE `citas`
+  MODIFY `id_cita` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `solicitudes`
+--
+ALTER TABLE `solicitudes`
+  MODIFY `id_solicitud` int(10) NOT NULL AUTO_INCREMENT;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `citas`
+--
+ALTER TABLE `citas`
+  ADD CONSTRAINT `citas_ibfk_1` FOREIGN KEY (`id_medico`) REFERENCES `medico` (`id_medico`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `solicitudes`
+--
+ALTER TABLE `solicitudes`
+  ADD CONSTRAINT `solicitudes_ibfk_1` FOREIGN KEY (`id_medico`) REFERENCES `medico` (`id_medico`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
